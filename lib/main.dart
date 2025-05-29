@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
-void main() {
- runApp(SuperApp());
-}
+void main() => runApp(MaterialApp(home: MyRiveAnimation()));
 
-class SuperApp extends StatelessWidget{
+class MyRiveAnimation extends StatelessWidget {
+  const MyRiveAnimation({super.key});
+
   @override
-  Widget build(BuildContext context){
-    return MaterialApp(
-      title: 'SuperApp',
-      home: Scaffold(
-        appBar: AppBar(
-        title: Text('SuperApp'),
-         ),
-       body: Center(
-        child: Text('Hello, SuperApp!'),
-       ),
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: RiveAnimation.network(
+          'https://cdn.rive.app/animations/vehicles.riv',
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
 }
-
-
