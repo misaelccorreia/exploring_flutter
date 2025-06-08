@@ -12,7 +12,15 @@ void main(){
 class BookApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
+      theme: ThemeData(
+        primarySwatch:Colors.amber,
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(50))
+          )
+        ),
+      ),
       home: HomePage(),
     );
   }
@@ -26,18 +34,26 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage>{
+  final _controller = TextEditingController();
+
+  var titulo = "";
+  var itemCount = 0; 
+
   void _buscarLivros() async {
-    final url = Uri.http(
-      'www.googleapi.com',
-      '/book/v1/volumes',
-      {'q':'{http}'},
+    titulo = _controller.text;
+
+    final url = Uri.https(
+      'www.googleapis.com',
+      '/books/v1/volumes',
+      {'q':titulo},
     );
     final response = await http.get(url);
-
+    setState(() {});//make reload of itens on my class 
     if(response.statusCode == 200){
       final jsonResponse = convert.jsonDecode(response.body);
-      final itemCount = jsonResponse['totalItems'];
-      print('Number of books about HTTP: $itemCount.');
+      itemCount = jsonResponse['totalItems'];
+      print('Number of books about $titulo: $itemCount.');
+      
       } else {
         print('Request failed with status: ${response.statusCode}');
     }
@@ -50,15 +66,15 @@ class _HomePageState extends State<HomePage>{
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            const TextField(),
+            TextField(controller: _controller,),//input 
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: _buscarLivros,
               icon: const Icon(Icons.search),
               label: const Text('Pesquisar')),
             const SizedBox(height: 16),
-            Text('Foram encontrados X livros sobre X:' ,
-            style: Theme.of(context).textTheme.headlineMedium,
+            Text('Foram encontrados $itemCount livros sobre $titulo:' ,
+            //style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
