@@ -33,7 +33,13 @@ class _HomePageState extends State<HomePage>{
       appBar:AppBar(
         title: const Text('Atrações'),
         ),
-        body: const Placeholder(),
+        body: ListView.builder(
+          itemCount: listaAtracoes.length,
+          itemBuilder: (context, index){
+            return ListTile(
+              title: Text(listaAtracoes[index].nome),
+            );
+        }),
     );
   }
 }
