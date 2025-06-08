@@ -40,6 +40,13 @@ class _HomePageState extends State<HomePage>{
           itemBuilder: (context, index){
             final isFavorito = _listaFavoritos.contains(listaAtracoes[index]);
             return ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:(context)=>
+                      AtracaoPage(atracao: listaAtracoes[index])));
+              },
               title: Text(listaAtracoes[index].nome),
               subtitle: Wrap(
                 spacing: 8,
@@ -96,3 +103,21 @@ const listaAtracoes = [
   Atracao("Avril Lavigne", 9, ["Estreia", "Sucesso", "Lançamento"]),
   Atracao("Ludmilla", 10, ["Representativade", "Sucesso", "Parcerias"]),
   ];
+
+  class AtracaoPage extends StatelessWidget{
+    final Atracao atracao;
+    const AtracaoPage({Key? key, required this.atracao}):super(key: key);
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(atracao.nome),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Placeholder(),
+        ),
+      );
+    }
+  }
